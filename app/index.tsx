@@ -1,0 +1,45 @@
+import { router } from "expo-router";
+import { StyleSheet, TextInput, View } from "react-native";
+import '../firebaseConfig'
+import { useFonts } from 'expo-font'
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import React from "react";
+import LogButton from "@/components/loginButton";
+
+export default function index() {
+  const [email, onChangeEmail] = React.useState('');
+  const [password, onChangePassword] = React.useState('');
+  const [loaded, error] = useFonts({
+    'cursive': require('../assets/fonts/font.otf')
+  })
+  const auth = getAuth();
+  return (
+    <View
+      style={Styles.view}>
+      <TextInput style={Styles.TextInput} placeholder="email" onChangeText={onChangeEmail}/>
+      <TextInput style={Styles.TextInput} placeholder="password" onChangeText={onChangePassword} secureTextEntry={true}/>
+      <LogButton text="Entrar" onPress={() => {signInWithEmailAndPassword(auth, email, password).then((userCred) => 
+        {const user = userCred.user; router.push(`/MainPage`)}).catch((error) => {console.log(error)})}}/>
+      <LogButton text="Registrarme" onPress={() => router.push('/registrar')}/>
+    </View>
+  );
+}
+
+const Styles = StyleSheet.create({
+  TextInput: {
+    width: 250,
+    margin: 10,
+    padding: 10,
+    borderWidth: 3,
+    borderRadius: 10,
+    borderStyle: 'solid',
+    borderColor: 'rgb(75, 75, 75)',
+    fontSize: 20
+  },
+  view: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: 'cursive'
+  }
+})
