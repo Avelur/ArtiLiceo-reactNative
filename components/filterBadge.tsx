@@ -1,7 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown"
 
-const FilterBadge = () => {
+type filterType = {
+    onChange?: void
+}
+
+const FilterBadge: React.FC<filterType> = ( onChange ) => {
     const nodes = [
         {label: "nombre", value: ""},
         {label: "precio", value: ""}
@@ -15,8 +19,8 @@ const FilterBadge = () => {
     ]
     return(
         <View style={Styles.view}>
-            <Dropdown style={Styles.filter} data={nodes} labelField="label" valueField="value" placeholder="nombre" onChange={item => {}}></Dropdown>
-            <Dropdown style={Styles.filter} data={tags} labelField="label" valueField="value" onChange={item => {}}></Dropdown>
+            <Dropdown style={Styles.filter} data={nodes} labelField="label" valueField="value" placeholder="nombre" onChange={() => {onChange}}></Dropdown>
+            <Dropdown style={Styles.filter} data={tags} labelField="label" valueField="value" onChange={() => {onChange}}></Dropdown>
         </View>
     )
 }

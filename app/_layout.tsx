@@ -6,8 +6,8 @@ export default function RootLayout() {
       <Stack.Screen name="index" options={{ headerShown: false }}/>
       <Stack.Screen name="registrar" options={{ headerShown: false }}/>
       <Stack.Screen name="MainPage" options={{ headerShown: false }}/>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }}/>
-      <Stack.Screen name="[articulo]" options={{ headerShown: false }}/>
+      <Stack.Screen name="[id]" options={{ headerShown: false }}/>
+      <Stack.Screen name="Carrito" options={{ headerShown: false }}/>
     </Stack>
   );
 }

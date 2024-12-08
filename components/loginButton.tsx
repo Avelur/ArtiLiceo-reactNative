@@ -1,3 +1,4 @@
+import { useFonts } from "expo-font";
 import { Pressable, StyleSheet, Text } from "react-native";
 
 type loginButtonProperties = {
@@ -9,9 +10,15 @@ const logButton: React.FC<loginButtonProperties> = ({
     text,
     onPress
 }) => {
+    let [fontsLoaded] = useFonts({
+        'font': require('../assets/fonts/font.otf')
+      });
+      if (!fontsLoaded) {
+        return <Text>Loading fonts...</Text>;
+      }
     return (
     <Pressable onPress={onPress} style={Styles.button}>
-        <Text>{text}</Text>
+        <Text style={Styles.font}>{text}</Text>
     </Pressable>
     )
 }
@@ -25,10 +32,12 @@ const Styles = StyleSheet.create({
         borderStyle: 'solid',
         borderColor: 'rgb(75, 75, 75)',
         borderWidth: 2,
-        fontWeight: 'bold',
-        fontFamily: 'cursive',
         fontSize: 20,
         textAlign: 'center'
+    },
+    font: {
+        fontWeight: 'bold',
+        fontFamily: 'font',
     }
 })
 

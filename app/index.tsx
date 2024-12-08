@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View, Text } from "react-native";
 import '../firebaseConfig'
 import { useFonts } from 'expo-font'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -9,13 +9,16 @@ import LogButton from "@/components/loginButton";
 export default function index() {
   const [email, onChangeEmail] = React.useState('');
   const [password, onChangePassword] = React.useState('');
-  const [loaded, error] = useFonts({
-    'cursive': require('../assets/fonts/font.otf')
-  })
+  let [fontsLoaded] = useFonts({
+    'font': require('../assets/fonts/font.otf')
+  });
+  if (!fontsLoaded) {
+    return <Text>Loading fonts...</Text>;
+  }
   const auth = getAuth();
   return (
-    <View
-      style={Styles.view}>
+    <View style={Styles.view}>
+      <Text style={Styles.font}>ertfghr</Text>
       <TextInput style={Styles.TextInput} placeholder="email" onChangeText={onChangeEmail}/>
       <TextInput style={Styles.TextInput} placeholder="password" onChangeText={onChangePassword} secureTextEntry={true}/>
       <LogButton text="Entrar" onPress={() => {signInWithEmailAndPassword(auth, email, password).then((userCred) => 
@@ -40,6 +43,9 @@ const Styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    fontFamily: 'cursive'
+    fontFamily: 'font'
+  },
+  font: {
+    fontFamily: 'font'
   }
 })

@@ -1,4 +1,4 @@
-import Carrito, { anadirAlCarrito } from "@/app/Carrito";
+import { borrarDelCarrito } from "@/app/Carrito";
 import { router } from "expo-router";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useState } from "react";
@@ -6,9 +6,10 @@ import { StyleSheet, Image, Pressable, Text, View, FlatList, } from "react-nativ
 
 type articuloProps = {
     articulo: Articulo
+    idArray: number
 }
 
-const ArticuloCard: React.FC<articuloProps> = ({ articulo }) => {
+const CarritoCard: React.FC<articuloProps> = ({ articulo, idArray }) => {
     
     const tags:any = [];
     const storage = getStorage();
@@ -26,8 +27,8 @@ const ArticuloCard: React.FC<articuloProps> = ({ articulo }) => {
       }
       image();
 
-    function anadirCarrito(){
-        anadirAlCarrito(articulo);
+    function borrarCarrito(){
+        borrarDelCarrito(articulo, idArray);
     }
 
     return(
@@ -42,7 +43,7 @@ const ArticuloCard: React.FC<articuloProps> = ({ articulo }) => {
                     <Pressable style={Styles.tag}><Text>{articulo.tags}</Text></Pressable>
                 </View>
                 <View style={Styles.fin}>
-                    <Pressable style={Styles.carrito} onPress={anadirCarrito}><Text>Añadir al carrito</Text></Pressable>
+                    <Pressable style={Styles.carrito} onPress={borrarCarrito}><Text>Añadir al carrito</Text></Pressable>
                     <FlatList data={tags} renderItem={({item}) => (<Text style={{margin: 5}}>{item.tag}</Text>)} numColumns={3}></FlatList>
                 </View>
             </View>
@@ -50,11 +51,11 @@ const ArticuloCard: React.FC<articuloProps> = ({ articulo }) => {
     )
 }
 
-export default ArticuloCard;
+export default CarritoCard;
 
 const Styles = StyleSheet.create({
     View:{
-        width: '45%',
+        width: 160,
         height: 300,
         alignItems: 'center',
         backgroundColor: 'rgb(255, 245, 224)',

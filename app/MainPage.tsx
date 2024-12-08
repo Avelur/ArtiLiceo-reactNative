@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { FlatList, Pressable, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { FlatList, StatusBar, StyleSheet, View } from "react-native";
 import Button from "@/components/button";
 import ArticuloCard from "@/components/articuloCard";
 import { useEffect, useState } from "react";
@@ -18,8 +18,7 @@ const MainPage = () => {
         (await fetchArticules).forEach((data) => {
           //setArticules([data.data()]);
           //console.log(articules);
-
-          art.push(data.data());
+          art.push({id: data.id, nombre: data.data().nombre, descripcion: data.data().descripcion, imagePath: data.data().imagePath, precio: data.data().precio, tags: data.data().tags});
           setArticules(art);
         })
     articules.forEach((element: any) => {
@@ -28,26 +27,19 @@ const MainPage = () => {
     };
     datos();
   }, [setArticules]);
+  /*
+  useEffect(()=>{
+    const sorted = [...art].sort((a, b) => a.precio - b.precio);
+    setArticules(sorted);
+  }, [setArticules])
+  */
 
-  useEffect(() => {
-    const sort = (data: [], label: String) => {
-        if(label === "nombre"){
-          art.push(data.sort((a: Articulo, b: Articulo) => a.nombre.localeCompare(b.nombre)));
-        }
-        if(label === "precio"){
-          art.push(data.sort((a: Articulo, b: Articulo) => a.precio - b.precio));
-        }
-        setArticules(art);
-    };
-  //sort(articules, "precio");
-  }, [setArticules]);
-  
   return (
     <View>
       <View style={Styles.tabMenu}>
         <View style={Styles.panel}></View>
         <Button text="Nuestros articules" onPress={() => {router.push('/MainPage')}}/>
-        <Button text="carrito" onPress={() => {}}/>
+        <Button text="carrito" onPress={() => {router.push('/Carrito')}}/>
         <Button text="Exit" onPress={()=>{}}/>
       </View>
       <View style={Styles.View}>
@@ -70,7 +62,6 @@ const Styles = StyleSheet.create({
       color: 'white'
     },
     View:{
-      margin:20,
       alignSelf: 'center'
     },
     ExitView:{

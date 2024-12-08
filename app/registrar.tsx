@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View, Text } from "react-native";
 import LogButton from "@/components/button";
 import '../firebaseConfig'
 import { useFonts } from 'expo-font'
@@ -11,13 +11,15 @@ export default function index() {
   const [email, onChangeEmail] = React.useState('');
   const [password, onChangePassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [loaded, error] = useFonts({
-    'cursive': require('../assets/fonts/font.otf')
-  })
+  let [fontsLoaded] = useFonts({
+    'font': require('../assets/fonts/font.otf')
+  });
+  if (!fontsLoaded) {
+    return <Text>Loading fonts...</Text>;
+  }
   const auth = getAuth();
   return (
-    <View
-      style={Styles.view}>
+    <View style={Styles.view}>
       <TextInput style={Styles.TextInput} placeholder="new email" onChangeText={onChangeEmail}/>
       <TextInput style={Styles.TextInput} placeholder="new password" onChangeText={onChangePassword} secureTextEntry={true}/>
       <TextInput style={Styles.TextInput} placeholder="repite password" onChangeText={setConfirmPassword} secureTextEntry={true}/>
@@ -30,7 +32,7 @@ export default function index() {
           console.log("Las contraseñas no coinciden.")
         }
         }}/>
-        <LogButton text="Volver" onPress={() => router.push('/')}/>
+      <LogButton text="Volver" onPress={() => router.push('/')}/>
     </View>
   );
 }
@@ -50,6 +52,6 @@ const Styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    fontFamily: 'cursive'
+    fontFamily: 'font'
   }
 })
