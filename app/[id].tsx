@@ -42,7 +42,7 @@ const ArticuloPage = () => {
                 <View style={Styles.panel}></View>
                     <Button text="Nuestros articules" onPress={() => {router.push('/MainPage')}}/>
                     <Button text="carrito" onPress={() => {}}/>
-                    <Button text="Exit" onPress={()=>{}}/>
+                    <Button text="Salir" onPress={()=>{}}/>
             </View>
             {path ? <Image style={Styles.image} source={{uri:path}}></Image> : null}
             <Text>{articulo.id}</Text>

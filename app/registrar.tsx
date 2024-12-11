@@ -24,13 +24,14 @@ export default function index() {
   const auth = getAuth();
   return (
     <View style={Styles.view}>
-      <TextInput style={Styles.TextInput} placeholder="new email" onChangeText={onChangeEmail}/>
-      <TextInput style={Styles.TextInput} placeholder="new password" onChangeText={onChangePassword} secureTextEntry={true}/>
-      <TextInput style={Styles.TextInput} placeholder="repite password" onChangeText={setConfirmPassword} secureTextEntry={true}/>
+      <TextInput style={Styles.TextInput} placeholder="nombre de usuario" onChangeText={onChangeEmail}/>
+      <TextInput style={Styles.TextInput} placeholder="correo electronico" onChangeText={onChangeEmail}/>
+      <TextInput style={Styles.TextInput} placeholder="contraseña" onChangeText={onChangePassword} secureTextEntry={true}/>
+      <TextInput style={Styles.TextInput} placeholder="repite contraseña" onChangeText={setConfirmPassword} secureTextEntry={true}/>
       <View style={Styles.dateView}>
-        <TextInput style={Styles.DateInput} placeholder="year" onChangeText={setYear}/>
-        <TextInput style={Styles.DateInput} placeholder="month" onChangeText={setMonth}/>
-        <TextInput style={Styles.DateInput} placeholder="day" onChangeText={setDay}/>
+        <TextInput style={Styles.DateInput} placeholder="año" onChangeText={setYear}/>
+        <TextInput style={Styles.DateInput} placeholder="mes" onChangeText={setMonth}/>
+        <TextInput style={Styles.DateInput} placeholder="día" onChangeText={setDay}/>
       </View>
       <LogButton text="Registrarse" onPress={() => {
         console.log(password);

@@ -33,7 +33,7 @@ const Carrito = () => {
               <View style={Styles.panel}></View>
               <Button text="Nuestros articules" onPress={() => {router.push('/MainPage')}}/>
               <Button text="carrito" onPress={() => {router.push('/Carrito')}}/>
-              <Button text="Exit" onPress={()=>{Alert.alert('Atención!', '¿Estas seguro de que quieres salir?', [
+              <Button text="Salir" onPress={()=>{Alert.alert('Atención!', '¿Estas seguro de que quieres salir?', [
                   {
                     text: 'Cancel',
                     style: 'cancel',

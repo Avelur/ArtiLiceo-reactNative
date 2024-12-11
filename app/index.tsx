@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { StyleSheet, TextInput, View, Text } from "react-native";
+import { StyleSheet, TextInput, View, Text, Alert } from "react-native";
 import '../firebaseConfig'
 import { useFonts } from 'expo-font'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -22,14 +22,20 @@ export default function index() {
   const auth = getAuth();
   return (
     <View style={Styles.view}>
-      <TextInput style={Styles.TextInput} placeholder="email" onChangeText={onChangeEmail}/>
-      <TextInput style={Styles.TextInput} placeholder="password" onChangeText={onChangePassword} secureTextEntry={true}/>
+      <TextInput style={Styles.TextInput} placeholder="correo electronico" onChangeText={onChangeEmail}/>
+      <TextInput style={Styles.TextInput} placeholder="contraseña" onChangeText={onChangePassword} secureTextEntry={true}/>
       <LogButton text="Entrar" onPress={() => {signInWithEmailAndPassword(auth, email, password).then(async (userCred) => 
         {
           const user = userCred.user; router.push(`/MainPage`);
           await AsyncStorage.setItem("userEmail", email);
           }).catch((error) => {
-          console.log(error)
+          Alert.alert('Error!', 'Los datos introducidos no son validos!', [
+                            {
+                              text: 'Cancel',
+                              style: 'cancel',
+                            },
+                            {text: 'OK'},
+                          ]);
           })
         }}/>
       <LogButton text="Registrarme" onPress={() => router.push('/registrar')}/>
