@@ -39,7 +39,6 @@ const ArticuloCard: React.FC<articuloProps> = ({ articulo }) => {
                 <View style={Styles.contenido}>
                     {path ? <Image style={Styles.Image} source={{uri:path}}></Image> : null}
                     <Text style={Styles.precio}>{articulo.precio}</Text>
-                    <Pressable style={Styles.tag}><Text>{articulo.tags}</Text></Pressable>
                 </View>
                 <View style={Styles.fin}>
                     <Pressable style={Styles.carrito} onPress={anadirCarrito}><Text>Añadir al carrito</Text></Pressable>

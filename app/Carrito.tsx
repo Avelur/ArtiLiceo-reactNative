@@ -1,29 +1,36 @@
 import Button from "@/components/button";
 import CarritoCard from "@/components/carritoCard";
 import { router } from "expo-router";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { useEffect, useState } from "react"
-import { View, StyleSheet, StatusBar, FlatList } from "react-native"
+import { getAuth, signOut } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { useState } from "react"
+import { View, StyleSheet, StatusBar, FlatList, Alert } from "react-native"
 
 
 let articulesArray: any = [];
-let i = 0;
 let canRead: boolean = false; 
 
 export
 const Carrito = () => {
-let [ articules, setArticules ] = useState<any>([]);
+  let [ articules, setArticules ] = useState<any>([]);
   const db = getFirestore();
+  const auth = getAuth();
   return(
       <View>
           <View style={Styles.tabMenu}>
               <View style={Styles.panel}></View>
               <Button text="Nuestros articules" onPress={() => {router.push('/MainPage')}}/>
               <Button text="carrito" onPress={() => {router.push('/Carrito')}}/>
-              <Button text="Exit" onPress={()=>{}}/>
+              <Button text="Exit" onPress={()=>{Alert.alert('Atención!', '¿Estas seguro de que quieres salir?', [
+                  {
+                    text: 'Cancel',
+                    style: 'cancel',
+                  },
+                  {text: 'OK', onPress: () => {router.push('/'); signOut(auth)}},
+                ]);}}/>
           </View>
           <View style={Styles.View}>
-            <FlatList style={Styles.FlatList} data={articulesArray} renderItem={({item}) =>(<CarritoCard articulo={item} idArray={i}></CarritoCard>)} numColumns={2}></FlatList>
+            <FlatList style={Styles.FlatList} data={articulesArray} renderItem={({item}) =>(<CarritoCard articulo={item}></CarritoCard>)} numColumns={2}></FlatList>
           </View>
       </View>
   )
@@ -31,17 +38,13 @@ let [ articules, setArticules ] = useState<any>([]);
 
 export
 function anadirAlCarrito( art: Articulo ){
-  console.log("anadir");
-  articulesArray.push({art, i});
-  i++;
-}
-
-export
-function borrarDelCarrito( art: Articulo, idArt: number ){
-  console.log("anadir");
   articulesArray.push(art);
 }
 
+export
+function borrarDelCarrito(idArray: number){
+    articulesArray.splice(idArray, 1);
+}
 
 const Styles = StyleSheet.create({
     mainView: {
@@ -71,5 +74,3 @@ const Styles = StyleSheet.create({
     }
 })
 export default Carrito;
-
-

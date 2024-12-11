@@ -3,8 +3,11 @@ import { StyleSheet, TextInput, View, Text } from "react-native";
 import '../firebaseConfig'
 import { useFonts } from 'expo-font'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 import LogButton from "@/components/loginButton";
+
+export
+let authEmail: string;
 
 export default function index() {
   const [email, onChangeEmail] = React.useState('');
@@ -18,11 +21,10 @@ export default function index() {
   const auth = getAuth();
   return (
     <View style={Styles.view}>
-      <Text style={Styles.font}>ertfghr</Text>
       <TextInput style={Styles.TextInput} placeholder="email" onChangeText={onChangeEmail}/>
       <TextInput style={Styles.TextInput} placeholder="password" onChangeText={onChangePassword} secureTextEntry={true}/>
       <LogButton text="Entrar" onPress={() => {signInWithEmailAndPassword(auth, email, password).then((userCred) => 
-        {const user = userCred.user; router.push(`/MainPage`)}).catch((error) => {console.log(error)})}}/>
+        {const user = userCred.user; router.push(`/MainPage`); authEmail = email;}).catch((error) => {console.log(error)})}}/>
       <LogButton text="Registrarme" onPress={() => router.push('/registrar')}/>
     </View>
   );

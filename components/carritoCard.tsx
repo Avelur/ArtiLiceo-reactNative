@@ -6,10 +6,9 @@ import { StyleSheet, Image, Pressable, Text, View, FlatList, } from "react-nativ
 
 type articuloProps = {
     articulo: Articulo
-    idArray: number
 }
 
-const CarritoCard: React.FC<articuloProps> = ({ articulo, idArray }) => {
+const CarritoCard: React.FC<articuloProps> = ({ articulo }) => {
     
     const tags:any = [];
     const storage = getStorage();
@@ -28,7 +27,6 @@ const CarritoCard: React.FC<articuloProps> = ({ articulo, idArray }) => {
       image();
 
     function borrarCarrito(){
-        borrarDelCarrito(articulo, idArray);
     }
 
     return(
@@ -38,12 +36,13 @@ const CarritoCard: React.FC<articuloProps> = ({ articulo, idArray }) => {
                     <Text style={Styles.text}>{articulo.nombre}</Text>
                 </View>
                 <View style={Styles.contenido}>
+                    <Text>{articulo.index}</Text>
                     {path ? <Image style={Styles.Image} source={{uri:path}}></Image> : null}
                     <Text style={Styles.precio}>{articulo.precio}</Text>
                     <Pressable style={Styles.tag}><Text>{articulo.tags}</Text></Pressable>
                 </View>
                 <View style={Styles.fin}>
-                    <Pressable style={Styles.carrito} onPress={borrarCarrito}><Text>Añadir al carrito</Text></Pressable>
+                    <Pressable style={Styles.carrito} onPress={()=>{}}><Text>Borrar del carrito</Text></Pressable>
                     <FlatList data={tags} renderItem={({item}) => (<Text style={{margin: 5}}>{item.tag}</Text>)} numColumns={3}></FlatList>
                 </View>
             </View>
