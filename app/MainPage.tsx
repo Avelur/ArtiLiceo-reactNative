@@ -7,6 +7,7 @@ import { collection, DocumentData, getDocs, getFirestore } from "firebase/firest
 import FilterBadge from "@/components/filterBadge";
 import { getAuth, signOut } from "firebase/auth";
 import { authEmail } from ".";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const MainPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [articules, setArticules] = useState<any>([]);
@@ -25,13 +26,14 @@ const MainPage = () => {
           setArticules(art);
           index++;
         })
+        const email = await AsyncStorage.getItem("userEmail");
+        console.log(email);
     articules.forEach((element: any) => {
       console.log(element.imagePath)
       });
       setIsLoading(false);
     };
     datos();
-    console.log(authEmail);
   }, [setArticules]);
 
   useEffect(()=>{
@@ -61,8 +63,6 @@ const MainPage = () => {
                 ]);}}/>
       </View>
       <View style={Styles.View}>
-        <TextInput placeholder="Type text for search..." onChangeText={setSearchText}></TextInput>
-        <FilterBadge></FilterBadge>
         <FlatList style={Styles.FlatList} data={articules} renderItem={({item}) =>(<ArticuloCard articulo={item}></ArticuloCard>)} numColumns={2}></FlatList>
       </View>
     </View>

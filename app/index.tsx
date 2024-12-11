@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font'
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import LogButton from "@/components/loginButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export
 let authEmail: string;
@@ -23,8 +24,14 @@ export default function index() {
     <View style={Styles.view}>
       <TextInput style={Styles.TextInput} placeholder="email" onChangeText={onChangeEmail}/>
       <TextInput style={Styles.TextInput} placeholder="password" onChangeText={onChangePassword} secureTextEntry={true}/>
-      <LogButton text="Entrar" onPress={() => {signInWithEmailAndPassword(auth, email, password).then((userCred) => 
-        {const user = userCred.user; router.push(`/MainPage`); authEmail = email;}).catch((error) => {console.log(error)})}}/>
+      <LogButton text="Entrar" onPress={() => {signInWithEmailAndPassword(auth, email, password).then(async (userCred) => 
+        {
+          const user = userCred.user; router.push(`/MainPage`);
+          await AsyncStorage.setItem("userEmail", email);
+          }).catch((error) => {
+          console.log(error)
+          })
+        }}/>
       <LogButton text="Registrarme" onPress={() => router.push('/registrar')}/>
     </View>
   );

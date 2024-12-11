@@ -1,19 +1,31 @@
 import Button from "@/components/button";
 import CarritoCard from "@/components/carritoCard";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { getAuth, signOut } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { useState } from "react"
-import { View, StyleSheet, StatusBar, FlatList, Alert } from "react-native"
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { useEffect, useState } from "react"
+import { View, StyleSheet, StatusBar, FlatList, Alert } from "react-native";
 
+let articulesIds: [] = [];
+let cantidad: number[] = [];
 
-let articulesArray: any = [];
-let canRead: boolean = false; 
+type articulo = {
+  id: string,
+  cantidad: number
+}
 
 export
 const Carrito = () => {
-  let [ articules, setArticules ] = useState<any>([]);
   const db = getFirestore();
+  useEffect(() => {
+    const datos = () => {
+        getDoc(doc(db, "carrito", "dankshum@gmail.com")).then(async (data) => {
+        
+        });
+    };
+    datos();
+  });
   const auth = getAuth();
   return(
       <View>
@@ -30,20 +42,64 @@ const Carrito = () => {
                 ]);}}/>
           </View>
           <View style={Styles.View}>
-            <FlatList style={Styles.FlatList} data={articulesArray} renderItem={({item}) =>(<CarritoCard articulo={item}></CarritoCard>)} numColumns={2}></FlatList>
+            <FlatList style={Styles.FlatList} data={articulesIds} extraData={cantidad} renderItem={({item}) =>(<CarritoCard articuloId={item}></CarritoCard>)} numColumns={2}></FlatList>
           </View>
       </View>
   )
 }
 
 export
-function anadirAlCarrito( art: Articulo ){
-  articulesArray.push(art);
+  async function anadirAlCarrito( articuloId: string ){
+  let borrar = 0;
+  const db = getFirestore();
+  let i = 0;
+  articulesIds.push(articuloId);
+  cantidad.push(1);
+  articulesIds.forEach((data) => {
+    if(data == articuloId){
+      let index = articulesIds.indexOf(data);
+      //console.log(1);
+      borrar++;
+      if(borrar == 2){
+        cantidad[index] = cantidad[index] + 1;
+        articulesIds.pop();
+        cantidad.pop();
+        borrar = 0;
+      }
+    }else{
+      //console.log(0);
+    }
+  });
+  console.log(articulesIds.at(0));
+  console.log(cantidad.at(0));
+  const email: string = await AsyncStorage.getItem("userEmail")
+  await setDoc(doc(db, "carrito", email), {
+    cantidad,
+    articulesIds
+  });
 }
 
 export
-function borrarDelCarrito(idArray: number){
-    articulesArray.splice(idArray, 1);
+  async function borrarDelCarrito( articuloId: string ){
+  const db = getFirestore();
+  articulesIds.forEach((data) => {
+    if(data == articuloId){
+      let index = articulesIds.indexOf(data);
+      //console.log(1);
+      if(cantidad[index] != 0){
+        cantidad[index] = cantidad[index] - 1;
+      }
+      
+    }else{
+      //console.log(0);
+    }
+  });
+  
+  const email: string = await AsyncStorage.getItem("userEmail")
+  await setDoc(doc(db, "carrito", email), {
+    cantidad,
+    articulesIds
+  });
 }
 
 const Styles = StyleSheet.create({

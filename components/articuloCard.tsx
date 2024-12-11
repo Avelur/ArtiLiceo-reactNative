@@ -1,4 +1,4 @@
-import Carrito, { anadirAlCarrito } from "@/app/Carrito";
+import Carrito, { anadirAlCarrito, borrarDelCarrito } from "@/app/Carrito";
 import { router } from "expo-router";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useState } from "react";
@@ -27,7 +27,7 @@ const ArticuloCard: React.FC<articuloProps> = ({ articulo }) => {
       image();
 
     function anadirCarrito(){
-        anadirAlCarrito(articulo);
+        anadirAlCarrito(articulo.id);
     }
 
     return(

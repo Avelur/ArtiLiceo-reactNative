@@ -1,20 +1,22 @@
 import { borrarDelCarrito } from "@/app/Carrito";
 import { router } from "expo-router";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref } from "firebase/storage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Image, Pressable, Text, View, FlatList, } from "react-native";
 
 type articuloProps = {
-    articulo: Articulo
+    articuloId: string,
+    cantidad: number
 }
 
-const CarritoCard: React.FC<articuloProps> = ({ articulo }) => {
-    
+const CarritoCard: React.FC<articuloProps> = ({ articuloId, cantidad }) => {
     const tags:any = [];
-    const storage = getStorage();
-    const gsReference = ref(storage, 'images/' + articulo.imagePath);
+    const db = getFirestore();
+    //const gsReference = ref(storage, 'images/' + articulo.imagePath);
     const [path, setPath] = useState('');
-    const id: any = articulo.id;
+    //const id: any = articulo.id;
+    /*
     const image = () => {
         getDownloadURL(gsReference)
         .then((url) => {
@@ -25,24 +27,35 @@ const CarritoCard: React.FC<articuloProps> = ({ articulo }) => {
         });
       }
       image();
+      */
+
+    const [ articulo, setArticulo] = useState<any>();
+
+    useEffect(() => {
+        const fetchDatos = async () => {
+            getDoc(doc(db, "articules", articuloId)).then((data) => {
+                setArticulo(data.data())
+            })
+        }
+        fetchDatos();
+    }, [setArticulo])
+    
 
     function borrarCarrito(){
+        borrarDelCarrito(articuloId);
     }
 
     return(
-        <Pressable style={Styles.View} onPress={() => {router.push(`/${id}`)}}>
+        <Pressable style={Styles.View}>
             <View>
                 <View style={Styles.cabeza}>
-                    <Text style={Styles.text}>{articulo.nombre}</Text>
+                    <Text style={Styles.text}>1</Text>
                 </View>
                 <View style={Styles.contenido}>
-                    <Text>{articulo.index}</Text>
-                    {path ? <Image style={Styles.Image} source={{uri:path}}></Image> : null}
-                    <Text style={Styles.precio}>{articulo.precio}</Text>
-                    <Pressable style={Styles.tag}><Text>{articulo.tags}</Text></Pressable>
+                    <Text style={Styles.precio}>2</Text>
                 </View>
                 <View style={Styles.fin}>
-                    <Pressable style={Styles.carrito} onPress={()=>{}}><Text>Borrar del carrito</Text></Pressable>
+                    <Pressable style={Styles.carrito} onPress={borrarCarrito}><Text>Borrar del carrito</Text></Pressable>
                     <FlatList data={tags} renderItem={({item}) => (<Text style={{margin: 5}}>{item.tag}</Text>)} numColumns={3}></FlatList>
                 </View>
             </View>
